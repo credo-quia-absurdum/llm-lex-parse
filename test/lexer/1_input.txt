@@ -1,0 +1,86 @@
+/*******          test1.c for project 1       *******/
+/* This is a test program for Lexical Analysis.
+/* This program has none c operator , ".." */
+/*  and nested comments and string and charactor */
+*/
+struct _point {
+    float x, y, z;
+    int color;
+} point[20];
+
+struct _line {
+    struct _point *p[2];
+    int color;
+} line[20];
+
+struct _model {
+    struct _line *l;
+    int cardinal;
+    char *name;
+};
+
+float pi;
+
+float find_large_length_line(struct _model *m);
+
+main () 
+{
+    struct _model object1;
+    int i;
+   
+    pi = 3.14;		/* must accept float-constant. */
+   
+    for(i = 0; i < 20; ++i) {
+        point[i].x = i * i + 14.4 * i + 4;
+        point[i].y = - (i * i - 24 * i + 8);
+        point[i].z = 10 * i + 5;
+    }
+    i = 19;
+    while(i >= 0) {
+        line[i].p[0] = &point[i];
+        if(i == 19) line[i].p[1] = &point[0];
+        else line[i].p[1] = &point[i + 1];
+        --i;
+    }
+   
+    object1.cardinal = 20;	/* not "object", "1.", "cardinal" */
+    object1.l = line;
+    object1.name = polygon1;
+    /* if string pattern definition implemented,
+    you can accept this lexeme. */
+   
+    {
+        float max;
+        max = find_large_length_line(&object1);
+        return max;
+    }
+}
+
+float find_large_legnth_line() 
+{ 
+    /* subc may allow this syntex. */
+    int count;
+    float max_length;
+
+    if(*(m->name) == d) return 14..2;	/* integer, dotdot, and integer
+                                        must detected. */
+    count = m->cardinal;
+    max_length = -1;
+
+    while(count >= 0) {
+        float length, dx, dy, dz;
+        dx = m->l[count].p[0]->x - m->l[count].p[1]->x;
+        dy = m->l[count].p[0]->y - m->l[count].p[1]->y;
+        dz = m->l[count].p[0]->z - m->l[count].p[1]->z;
+        length = dx * dx + dy * dy + dz * dz;
+        if(max_length < length) max_length = length;
+        --count;
+    }
+    return max_length;
+}
+
+/* Operator Test */
+( ), [ ], { }, ->, ., ,, !, ++, --, *, /, %, +, -, <, <=, >, >=, ==, !=, &, &&, ||, ;, =
+
+/* Keyword Test */
+break,char,continue,else,float,for,if,int,return,struct,while,NULL
