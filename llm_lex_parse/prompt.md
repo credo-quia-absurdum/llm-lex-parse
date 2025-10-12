@@ -61,7 +61,7 @@ test/
 
 ## 4. Iteration Workflow
 
-Each iteration targets a single core objective: refine the script so its runtime output **exactly matches the canonical `output.txt`** stored alongside the component. To do that, every experiment produces **three artifacts** inside the component-specific `exp/` directory (`llm_lex/exp/` today, `llm_parse/exp/` once enabled):
+Each iteration targets a single core objective: refine the script so its runtime output **exactly matches the canonical `output.txt`** stored alongside the component. To do that, every experiment produces **three artifacts** inside the component-specific `exp/` directory (`llm_lex/exp/` today, `llm_parse/exp/` once enabled). *Skipping any artifact invalidates the iteration.*
 
 1. **Source Script**  
    `lexer_N.py` or `parser_N.py` — Python source code for iteration `N`.
@@ -80,9 +80,18 @@ Each iteration targets a single core objective: refine the script so its runtime
    - Input and full output
    - Discrepancies, bug notes, and improvements
 
+> **Actionable rule:** Always check in the trio (`lexer_N.py`/`parser_N.py`, `output_N.txt`, `analysis_N.md`) together. Even for small tweaks, rerun the executable, capture the fresh logs, and document what changed so the experiment ledger remains reproducible.
+
 
 ### Terminate Condition
 When the generated `output_N.txt` matches the target `output.txt` in the corresponding component directory (`llm_lex` for the lexer, `llm_parse` for the parser), stop iteration for that component.
++
++When the iteration terminates, promote the final experiment script to the canonical entry point inside `exp/`:
++
++- Copy the successful `lexer_N.py` to `lexer.py`.
++- Copy the successful `parser_N.py` to `parser.py`.
++
++This ensures downstream tooling can reference a stable filename even after the experiment cycle ends.
 ---
 
 ## 6. Development Principles

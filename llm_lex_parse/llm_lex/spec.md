@@ -107,3 +107,22 @@ ID	point	1
 OP	[
 INT	20
 ```
+
+## 5. Experiment Artifacts
+
+Every lexer iteration must publish a complete triplet of deliverables under `llm_lex/exp/`:
+
+- `lexer_N.py` — the Python source for iteration `N`.
+- `output_N.txt` — console output captured via `python3 llm_lex/exp/lexer_N.py llm_lex/input.txt > llm_lex/exp/output_N.txt 2>&1`.
+- `analysis_N.md` — a short report that records the environment, command executed, observed output, and any findings or follow-up actions.
+
+Do not omit the execution log or analysis. These artifacts ensure traceability between code changes and their observed behaviour.
+
+## 6. Finalization
+
+When the lexer experiment reaches the terminate condition (the generated output matches `llm_lex/output.txt`), promote the latest iteration file to a stable entry point within `llm_lex/exp/`:
+
+- Copy the successful `lexer_N.py` to `lexer.py`.
+- Ensure the corresponding `output_N.txt` and `analysis_N.md` remain for historical reference.
+
+Downstream consumers should import or execute `lexer.py`, so keep it synchronized with the most recent validated iteration.
