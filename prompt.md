@@ -1,11 +1,11 @@
-# 🧩 Project Prompt: subC Lexe and Parser (AI Agent Specification)
+# 🧩 Project Prompt: subC Lexer and Parser (AI Agent Specification)
 
 ## 1. Overview
 
 This project implements a **Python-based lexical analyzer (lexer) and syntactic parser** for a simplified C-like language called **`subC`**.  
 
-- The lexer reads raw source code, tokenizes it based on the lexical rules defined in `lexer/spec.md`, and emits **tab-separated ASCII tokens**.  
-- The parser consumes lexer output, apply the grammar in `parser/spec.md`, and report parse trees or diagnostics.
+- The lexer reads raw source code, tokenizes it based on the lexical rules defined in `llm_lex/spec.md`, and emits **tab-separated ASCII tokens**.  
+- The parser consumes lexer output, applies grammar rules (to be documented alongside the parser implementation), and reports parse trees or diagnostics.
 
 Development follows an **iterative approach** — each iteration refines functionality, records outputs, and documents analysis results.
 
@@ -22,10 +22,10 @@ Development follows an **iterative approach** — each iteration refines functio
   (`re`, `argparse`, `dataclasses`, `sys`)
 - **Execution Commands:**
   ```bash
-  python3 llm_lex/lexer/exp/lexer_N.py llm_lex/lexer/input.txt > llm_lex/lexer/exp/output_N.txt 2>&1
+  python3 llm_lex/exp/lexer_N.py llm_lex/input.txt > llm_lex/exp/output_N.txt 2>&1
   ```
   Replace `N` with the iteration number.  
-  Parser iterations should follow the same invocation pattern under `llm_parse/parser/exp/`, using the parser entry point once implemented.
+  Parser iterations should follow the same invocation pattern under `llm_parse/exp/`, using the parser entry point once implemented.
 
 ---
 
@@ -33,36 +33,35 @@ Development follows an **iterative approach** — each iteration refines functio
 
 ```
 llm_lex/
- ├── lexer/
- │   ├── spec.md
- │   ├── input.txt
- │   ├── output.txt
- │   ├── exp/
- │   │   ├── lexer_1.py
- │   │   ├── output_1.txt
- │   │   └── analysis_1.md
- │   └── ...
- └── parser/
-     ├── spec.md
-     ├── input.txt
-     ├── output.txt
-     ├── exp/
-     │   ├── parser_1.py
-     │   ├── output_1.txt
-     │   └── analysis_1.md
-     └── ...
+ ├── spec.md
+ ├── input.txt
+ ├── output.txt
+ ├── clean.sh
+ └── exp/
+     ├── lexer_1.py
+     ├── output_1.txt
+     └── analysis_1.md
+llm_parse/
+ ├── input.txt
+ ├── output.txt
+ └── exp/
+     ├── parser_1.py
+     ├── output_1.txt
+     └── analysis_1.md
+test/
+ └── ...
 ```
 
-- Each component maintains its own `exp/` history.  
-- Keep lexer and parser modules **cleanly separated** while ensuring their interfaces remain compatible.  
-- The `output.txt` files serve as the authoritative expected results for each component; use them to validate experiment outputs.  
+- Each component maintains its own `exp/` history directly beneath the component root.
+- Keep lexer and parser modules **cleanly separated** while ensuring their interfaces remain compatible.
+- The `output.txt` files serve as the authoritative expected results for each component; use them to validate experiment outputs.
 - Maintain consistent **relative paths** in scripts and docs for both components.
 
 ---
 
 ## 4. Iteration Workflow
 
-Each iteration targets a single core objective: refine the script so its runtime output **exactly matches the canonical `output.txt`** stored alongside the component. To do that, every experiment produces **three artifacts** inside the component-specific `exp/` directory (`lexer/exp/` today, `parser/exp/` once enabled):
+Each iteration targets a single core objective: refine the script so its runtime output **exactly matches the canonical `output.txt`** stored alongside the component. To do that, every experiment produces **three artifacts** inside the component-specific `exp/` directory (`llm_lex/exp/` today, `llm_parse/exp/` once enabled):
 
 1. **Source Script**  
    `lexer_N.py` or `parser_N.py` — Python source code for iteration `N`.
@@ -71,7 +70,7 @@ Each iteration targets a single core objective: refine the script so its runtime
    `output_N.txt` — Captures both `stdout` and `stderr`.  
    Example:
    ```bash
-   python3 lexer/exp/lexer_N.py ../input.txt > lexer/exp/output_N.txt 2>&1
+   python3 llm_lex/exp/lexer_N.py llm_lex/input.txt > llm_lex/exp/output_N.txt 2>&1
    ```
    Adjust the command to target the parser binary and input file when working in `llm_parse/`.
 
@@ -88,7 +87,7 @@ When the generated `output_N.txt` matches the target `output.txt` in the corresp
 
 ## 6. Development Principles
 
-- Strictly conform to lexical specifications in `lexer/spec.md` and `parser/spec.md`.
+- Strictly conform to lexical specifications in `llm_lex/spec.md` (and the forthcoming parser specification once it lands in `llm_parse/`).
 - Maintain compatibility between lexer and parser modules.
 - Document every meaningful design or behavioral change.
 - Treat each iteration as a self-contained, reproducible experiment.
