@@ -24,7 +24,7 @@ EXP_DIR="$PROJECT_DIR/llm_lex_parse/llm_lex/exp_$model"
 
 echo "Running lexer test 1"
 
-python "$EXP_DIR/lexer.py" "$SCRIPT_DIR/1_input.txt" > "$SCRIPT_DIR/1_output_lexer.txt"
+python "$EXP_DIR/lexer.py" "$SCRIPT_DIR/1_input.txt" > "$SCRIPT_DIR/1_output_lexer.txt" 2>&1
 
 if ! diff -u "$SCRIPT_DIR/1_output.txt" "$SCRIPT_DIR/1_output_lexer.txt"; then
     echo "❌ Mismatch detected."
