@@ -51,8 +51,7 @@ llm_parse/
      ├── parser_1.py
      ├── output_1.txt
      └── analysis_1.md
-test/
- └── ...
+prompt.md
 ```
 
 - Each component maintains its own `exp/` history directly beneath the component root.
