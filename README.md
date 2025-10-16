@@ -1,2 +1,2 @@
 # llm-lex-parse
-LLM-Based Lexical Analysis and Syntactic Parsing for Compiler Front-Ends
+Exploring LLM-Based Generation of Lexers and Parsers for Compiler Front-Ends
