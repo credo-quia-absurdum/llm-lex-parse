@@ -1,0 +1,83 @@
+ext_def_list->epsilon
+type_specifier->TYPE
+pointers->epsilon
+func_decl->type_specifier pointers ID '(' ')'
+def_list->epsilon
+stmt_list->epsilon
+unary->ID
+unary->ID
+unary->ID
+unary->unary INCOP
+binary->unary
+expr->binary
+unary->unary '[' expr ']'
+unary->unary DECOP
+unary->'*' unary
+unary->'-' unary
+binary->unary
+expr->binary
+expr->unary '=' expr
+stmt->expr ';'
+stmt_list->stmt_list stmt
+unary->ID
+unary->unary INCOP
+binary->unary
+unary->ID
+unary->unary DECOP
+binary->unary
+binary->binary RELOP binary
+unary->ID
+unary->'!' unary
+binary->unary
+binary->binary LOGICAL_AND binary
+unary->ID
+unary->'&' unary
+binary->unary
+unary->ID
+unary->'-' unary
+binary->unary
+binary->binary RELOP binary
+binary->binary LOGICAL_OR binary
+expr->binary
+unary->ID
+unary->ID
+unary->unary '.' ID
+unary->ID
+unary->'!' unary
+binary->unary
+unary->ID
+binary->unary
+binary->binary '*' binary
+unary->INTEGER_CONST
+binary->unary
+binary->binary '/' binary
+unary->INTEGER_CONST
+binary->unary
+binary->binary '%' binary
+unary->INTEGER_CONST
+binary->unary
+binary->binary '+' binary
+unary->INTEGER_CONST
+binary->unary
+binary->binary '-' binary
+expr->binary
+unary->unary '[' expr ']'
+unary->'*' unary
+unary->'&' unary
+binary->unary
+expr->binary
+expr->unary '=' expr
+stmt->expr ';'
+stmt->IF '(' expr ')' stmt
+stmt_list->stmt_list stmt
+unary->ID
+unary->INCOP unary
+unary->unary INCOP
+binary->unary
+expr->binary
+stmt->expr ';'
+stmt_list->stmt_list stmt
+compound_stmt->'{' def_list stmt_list '}'
+ext_def->func_decl compound_stmt
+ext_def_list->ext_def_list ext_def
+program->ext_def_list
