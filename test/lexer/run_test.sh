@@ -5,14 +5,17 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 echo "Choose Model"
 echo "(0) codex"
 echo "(1) gemini"
+echo "(2) claude"
 read -r choice
 
 if [ "$choice" = "1" ]; then
     model="gemini"
 elif [ "$choice" = "0" ]; then
     model="codex"
+elif [ "$choice" = "2" ]; then
+    model="claude"
 else
-    echo "Invalid input. Please enter 1 or 0."
+    echo "Invalid input. Please enter 1, 0, or 2."
     exit 1
 fi
 
