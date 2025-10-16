@@ -4,8 +4,8 @@
 
 This project implements a **Python-based lexical analyzer (lexer) and syntactic parser** for a simplified C-like language called **`subC`**.  
 
-- The lexer reads raw source code, tokenizes it based on the lexical rules defined in `llm_lex/spec.md`, and emits **tab-separated ASCII tokens**.  
-- The parser consumes lexer output, applies grammar rules (to be documented alongside the parser implementation), and reports parse trees or diagnostics.
+- The lexer reads raw source code, tokenizes it based on the lexical rules defined in `llm_lex/spec.md`, and emits **tab-separated ASCII tokens** or a reusable token stream.  
+- The parser imports the shared lexer, applies the grammar and table-driven strategy defined in `llm_parse/parser_spec.md`, and emits production reductions or diagnostics.
 
 Development follows an **iterative approach** — each iteration refines functionality, records outputs, and documents analysis results.
 
@@ -25,7 +25,7 @@ Development follows an **iterative approach** — each iteration refines functio
   python3 llm_lex/exp/lexer_N.py llm_lex/input.txt > llm_lex/exp/output_N.txt 2>&1
   ```
   Replace `N` with the iteration number.  
-  Parser iterations should follow the same invocation pattern under `llm_parse/exp/`, using the parser entry point once implemented.
+Parser iterations should follow the same invocation pattern under `llm_parse/exp/`, using the parser entry point once implemented.
 
 ---
 
@@ -84,6 +84,7 @@ Each iteration targets a single core objective: refine the script so its runtime
    - Discrepancies, bug notes, and improvements
 
 > **Actionable rule:** Always check in the trio (`lexer_N.py`/`parser_N.py`, `output_N.txt`, `analysis_N.md`) together. Even for small tweaks, rerun the executable, capture the fresh logs, and document what changed so the experiment ledger remains reproducible.
+> For the first parser iteration, also refactor `llm_parse/lexer.py` into an importable `tokenize()` helper and mirror the updated lexer under `llm_parse/exp/`.
 
 
 ### Terminate Condition
@@ -99,8 +100,10 @@ When the generated `output_N.txt` matches the target `output.txt` in the corresp
 
 ## 6. Development Principles
 
-- Strictly conform to lexical specifications in `llm_lex/spec.md` (and the forthcoming parser specification once it lands in `llm_parse/`).
+- Strictly conform to lexical specifications in `llm_lex/spec.md` and the LALR(1) grammar requirements in `llm_parse/parser_spec.md`.
 - Maintain compatibility between lexer and parser modules.
+- Use the shared lexer module inside the parser; do not scrape stdout.
+- Keep the parser’s reduction log formatting consistent with `llm_parse/output.txt` (one `lhs->rhs` per line, literals quoted).
 - Document every meaningful design or behavioral change.
 - Treat each iteration as a self-contained, reproducible experiment.
 - Preserve consistent versioning and directory hygiene for regression tests.
@@ -111,4 +114,4 @@ When the generated `output_N.txt` matches the target `output.txt` in the corresp
 
 The **subC Lexer & Parser project** emphasizes clarity, reproducibility, and disciplined iteration.  
 Each version must demonstrate measurable improvement in tokenization or syntactic analysis accuracy and code maintainability, supported by transparent documentation.  
-Until the parser is implemented, maintain stubs and documentation so the transition into parser development is seamless.
+Refer to `llm_parse/parser_spec.md` for the authoritative grammar, precedence table, and subC language restrictions (no typedef, union, multi-dimensional arrays, pointer-to-function types, etc.).
