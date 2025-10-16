@@ -42,8 +42,11 @@ llm_lex/
      ├── output_1.txt
      └── analysis_1.md
 llm_parse/
+ ├── lexer_spec.md
+ ├── parser_spec.md
  ├── input.txt
  ├── output.txt
+ ├── lexer.py
  └── exp/
      ├── parser_1.py
      ├── output_1.txt
