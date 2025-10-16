@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/home/donguk/llm-lex-parse/llm_lex_parse/llm_parse/exp_gemini/parser_1.py", line 9, in <module>
+    from lexer import Token, tokenize
+  File "/home/donguk/llm-lex-parse/llm_lex_parse/llm_parse/exp_gemini/lexer.py", line 147
+    if source[position] == "\":
+                           ^
+SyntaxError: unterminated string literal (detected at line 147); perhaps you escaped the end quote?
