@@ -1,0 +1,29 @@
+ID	nested	1
+ID	comments	1
+KEY	struct	1
+ID	_point	1
+KEY	float	1
+ID	x	1
+ID	y	1
+ID	z	1
+KEY	int	1
+ID	color	1
+ID	point	1
+INT	20
+KEY	struct	2
+ID	_line	1
+KEY	struct	3
+ID	_point	2
+ID	p	1
+INT	2
+KEY	int	2
+ID	color	2
+KEY	float	2
+ID	meter	1
+INT	0
+INT	5
+ID	line	1
+INT	20
+INT	1
+OP	..
+INT	50

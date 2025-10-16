@@ -1,7 +1,23 @@
 #!/bin/bash
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")"/../.. && pwd)"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-EXP_DIR="$PROJECT_DIR/llm_lex_parse/llm_lex/exp"
+
+echo "Choose Model"
+echo "(0) codex"
+echo "(1) gemini"
+read -r choice
+
+if [ "$choice" = "1" ]; then
+    model="gemini"
+elif [ "$choice" = "0" ]; then
+    model="codex"
+else
+    echo "Invalid input. Please enter 1 or 0."
+    exit 1
+fi
+
+
+EXP_DIR="$PROJECT_DIR/llm_lex_parse/llm_lex/exp_$model"
 
 echo "Running lexer test 1"
 
