@@ -2,7 +2,7 @@
 
 ## 1. Goal
 
-Build a Python-based syntactic parser for the `subC` language. The parser reads a `subC` translation unit, consumes the token stream produced according to `llm_parse/lexer_spec.md`, and verifies that the program conforms to the grammar reproduced in Section 2. On success, the parser must emit the exact sequence of production reductions that recognizes the input; on failure, it must report the first syntax error with actionable diagnostics.
+Build a Python-based bottom-up LALR(1) parser for the `subC` language. The parser reads a `subC` translation unit, consumes the token stream produced according to `llm_parse/lexer_spec.md`, and verifies that the program conforms to the grammar reproduced in Section 2. On success, the parser must emit the exact sequence of production reductions that recognizes the input; on failure, it must report the first syntax error with actionable diagnostics.
 
 ## 2. Grammar
 
@@ -53,6 +53,22 @@ Expressions obey the precedence and associativity rules listed below (1 is the h
 | 10    | `,`                                              | Left          | Comma sequence                                  |
 
 The dangling-`else` rule binds `else` to the nearest unmatched `if`. Respect the precedence assignments when constructing or reducing expressions.
+
+### 2.4 subC vs. Standard C
+
+subC intentionally limits several C features to keep the grammar manageable:
+
+- No `typedef`.
+- No `union`.
+- No multi-dimensional arrays.
+- No pointer-to-function types.
+- No forward declarations.
+- No `long`, `short`, `float`, `double`, `unsigned`, or `void` (outside function returns).
+- Only `int` and `char` appear as built-in data types.
+- Structure and function definitions are permitted only at global scope.
+- Nested comments are allowed (handled lexically).
+- No explicit type casts.
+- Strong type checking is assumed but enforced outside the parser.
 
 ### 2.3 Productions
 
@@ -144,10 +160,10 @@ The Python implementation may internally refactor left-recursive productions (fo
 
 ### 3.3 Parsing Strategy
 
-- Implement a table-driven LALR(1) parser. Construct LR(1) item sets for the grammar, merge compatible lookahead sets, and derive ACTION/GOTO tables that the runtime uses to shift and reduce.
-- Generate parsing tables ahead of time (either as static Python dictionaries checked into the repo or dynamically at startup using only the Python standard library).
-- Maintain an explicit parse stack of states and grammar symbols. Follow the customary LALR loop: consult ACTION[state, token], shift or reduce accordingly, and log each completed reduction before updating the stack.
-- Handle the dangling `else` by ensuring the grammar or precedence rules resolve the ambiguity in favour of binding `ELSE` to the nearest unmatched `IF`.
+- Implement a table-driven LALR(1) parser. Augment the grammar with `program' -> program`, construct the canonical LR(1) item sets, merge compatible states, and derive ACTION/GOTO tables that the runtime uses to shift, reduce, or accept.
+- Generate parsing tables ahead of time (either as static Python dictionaries checked into the repo or dynamically at startup using only the Python standard library). Persist the tables in a deterministic format so experiments remain reproducible.
+- Maintain an explicit parse stack of states and grammar symbols. For each input token, consult `ACTION[state, lookahead]`; perform the indicated shift or reduce, print the reduction immediately when `reduce` is triggered, and follow `GOTO` to push the correct successor state. Enter the accept state when ACTION returns `ACCEPT`.
+- Handle the dangling `else` by ensuring the grammar or precedence rules resolve the ambiguity in favour of binding `ELSE` to the nearest unmatched `IF`. Encode any precedence directives directly into the table-construction phase so no ad-hoc runtime fixes are required.
 
 ### 3.4 Error Reporting
 
@@ -159,7 +175,7 @@ The Python implementation may internally refactor left-recursive productions (fo
 
 - Print one line per completed reduction using the exact layout `lhs->rhs1 rhs2 ...` (no spaces adjoining `->`). Use `epsilon` for empty right-hand sides.
 - Quote literal terminals with single quotes (e.g., `'('`, `';'`, `'{'`) to match `llm_parse/output.txt`. Nonterminals remain bare symbol names.
-- Reductions must appear in the order they occur during parsing. When implementing a top-down parser, emit the reduction once the production's right-hand side has been fully matched.
+- Reductions must appear in the precise order produced by the bottom-up ACTION table. Emit the log line immediately when a reduce action fires, before the stack is rewritten with the production’s left-hand side.
 - No additional whitespace, prompts, or debugging text is permitted on `stdout`.
 
 Example reductions for a simple program:
