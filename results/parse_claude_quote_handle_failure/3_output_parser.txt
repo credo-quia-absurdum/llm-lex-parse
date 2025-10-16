@@ -1,0 +1,25 @@
+ext_def_list->epsilon
+def_list->epsilon
+type_specifier->TYPE
+pointers->epsilon
+def->type_specifier pointers ID ';'
+def_list->def_list def
+type_specifier->TYPE
+pointers->epsilon
+def->type_specifier pointers ID ';'
+def_list->def_list def
+type_specifier->TYPE
+pointers->epsilon
+def->type_specifier pointers ID ';'
+def_list->def_list def
+type_specifier->TYPE
+pointers->epsilon
+def->type_specifier pointers ID ';'
+def_list->def_list def
+type_specifier->TYPE
+pointers->'*'
+def->type_specifier pointers ID ';'
+def_list->def_list def
+struct_specifier->STRUCT ID '{' def_list '}'
+type_specifier->struct_specifier
+pointers->epsilon

@@ -1,0 +1,67 @@
+SyntaxError: expected ) but got LOGICAL_OR at line 13, column 22
+ext_def_list->epsilon
+def_list->epsilon
+type_specifier->TYPE
+pointers->epsilon
+def->type_specifier pointers ID ';'
+def_list->def_list def
+type_specifier->TYPE
+pointers->epsilon
+def->type_specifier pointers ID ';'
+def_list->def_list def
+type_specifier->TYPE
+pointers->epsilon
+def->type_specifier pointers ID ';'
+def_list->def_list def
+type_specifier->TYPE
+pointers->epsilon
+def->type_specifier pointers ID ';'
+def_list->def_list def
+type_specifier->TYPE
+pointers->'*'
+def->type_specifier pointers ID ';'
+def_list->def_list def
+struct_specifier->STRUCT ID '{' def_list '}'
+type_specifier->struct_specifier
+pointers->epsilon
+ext_def->type_specifier pointers ID ';'
+ext_def_list->ext_def_list ext_def
+type_specifier->TYPE
+pointers->epsilon
+func_decl->type_specifier pointers ID '(' ')'
+def_list->epsilon
+stmt_list->epsilon
+unary->ID
+binary->unary
+unary->INTEGER_CONST
+binary->unary
+binary->binary RELOP binary
+expr->binary
+unary->'(' expr ')'
+unary->'!' unary
+binary->unary
+expr->binary
+unary->ID
+binary->unary
+unary->INTEGER_CONST
+binary->unary
+binary->binary '+' binary
+expr->binary
+unary->'(' expr ')'
+binary->unary
+expr->binary
+stmt->RETURN expr ';'
+stmt->IF '(' expr ')' stmt
+stmt_list->stmt_list stmt
+unary->ID
+unary->unary '.' ID
+unary->INTEGER_CONST
+binary->unary
+expr->binary
+unary->unary '[' expr ']'
+unary->'*' unary
+binary->unary
+unary->INTEGER_CONST
+binary->unary
+binary->binary RELOP binary
+expr->binary

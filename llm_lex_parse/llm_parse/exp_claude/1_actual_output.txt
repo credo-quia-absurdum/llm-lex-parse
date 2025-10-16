@@ -1,0 +1,342 @@
+SyntaxError: expected ; but got = at line 64, column 20
+ext_def_list->epsilon
+def_list->epsilon
+type_specifier->TYPE
+pointers->epsilon
+def->type_specifier pointers ID ';'
+def_list->def_list def
+type_specifier->TYPE
+pointers->epsilon
+def->type_specifier pointers ID ';'
+def_list->def_list def
+type_specifier->TYPE
+pointers->epsilon
+def->type_specifier pointers ID ';'
+def_list->def_list def
+type_specifier->TYPE
+pointers->epsilon
+def->type_specifier pointers ID ';'
+def_list->def_list def
+struct_specifier->STRUCT ID '{' def_list '}'
+type_specifier->struct_specifier
+pointers->epsilon
+ext_def->type_specifier pointers ID ';'
+ext_def_list->ext_def_list ext_def
+def_list->epsilon
+struct_specifier->STRUCT ID
+type_specifier->struct_specifier
+pointers->'*'
+def->type_specifier pointers ID ';'
+def_list->def_list def
+type_specifier->TYPE
+pointers->epsilon
+def->type_specifier pointers ID ';'
+def_list->def_list def
+struct_specifier->STRUCT ID '{' def_list '}'
+type_specifier->struct_specifier
+pointers->epsilon
+ext_def->type_specifier pointers ID ';'
+ext_def_list->ext_def_list ext_def
+def_list->epsilon
+struct_specifier->STRUCT ID
+type_specifier->struct_specifier
+pointers->'*'
+def->type_specifier pointers ID ';'
+def_list->def_list def
+type_specifier->TYPE
+pointers->epsilon
+def->type_specifier pointers ID ';'
+def_list->def_list def
+type_specifier->TYPE
+pointers->'*'
+def->type_specifier pointers ID ';'
+def_list->def_list def
+struct_specifier->STRUCT ID '{' def_list '}'
+type_specifier->struct_specifier
+pointers->epsilon
+ext_def->type_specifier pointers ID ';'
+ext_def_list->ext_def_list ext_def
+type_specifier->TYPE
+pointers->epsilon
+ext_def->type_specifier pointers ID ';'
+ext_def_list->ext_def_list ext_def
+type_specifier->TYPE
+pointers->epsilon
+ext_def->type_specifier pointers ID ';'
+ext_def_list->ext_def_list ext_def
+type_specifier->TYPE
+pointers->epsilon
+func_decl->type_specifier pointers ID '(' ')'
+def_list->epsilon
+type_specifier->TYPE
+pointers->epsilon
+def->type_specifier pointers ID ';'
+def_list->def_list def
+type_specifier->TYPE
+pointers->epsilon
+def->type_specifier pointers ID ';'
+def_list->def_list def
+stmt_list->epsilon
+unary->ID
+unary->unary '.' ID
+binary->unary
+expr->binary
+unary->'(' expr ')'
+unary->'*' unary
+binary->unary
+unary->ID
+binary->unary
+binary->binary EQUOP binary
+expr->binary
+unary->INTEGER_CONST
+binary->unary
+expr->binary
+stmt->RETURN expr ';'
+stmt->IF '(' expr ')' stmt
+stmt_list->stmt_list stmt
+unary->ID
+unary->ID
+unary->unary '.' ID
+binary->unary
+expr->binary
+expr->unary '=' expr
+stmt->expr ';'
+stmt_list->stmt_list stmt
+unary->ID
+unary->INTEGER_CONST
+unary->'-' unary
+binary->unary
+expr->binary
+expr->unary '=' expr
+stmt->expr ';'
+stmt_list->stmt_list stmt
+unary->ID
+binary->unary
+unary->INTEGER_CONST
+binary->unary
+binary->binary RELOP binary
+expr->binary
+def_list->epsilon
+type_specifier->TYPE
+pointers->epsilon
+def->type_specifier pointers ID ';'
+def_list->def_list def
+type_specifier->TYPE
+pointers->epsilon
+def->type_specifier pointers ID ';'
+def_list->def_list def
+type_specifier->TYPE
+pointers->epsilon
+def->type_specifier pointers ID ';'
+def_list->def_list def
+type_specifier->TYPE
+pointers->epsilon
+def->type_specifier pointers ID ';'
+def_list->def_list def
+stmt_list->epsilon
+unary->ID
+unary->ID
+unary->unary '.' ID
+unary->ID
+binary->unary
+expr->binary
+unary->unary '[' expr ']'
+unary->unary '.' ID
+unary->INTEGER_CONST
+binary->unary
+expr->binary
+unary->unary '[' expr ']'
+unary->unary '.' ID
+binary->unary
+unary->ID
+unary->unary '.' ID
+unary->ID
+binary->unary
+expr->binary
+unary->unary '[' expr ']'
+unary->unary '.' ID
+unary->INTEGER_CONST
+binary->unary
+expr->binary
+unary->unary '[' expr ']'
+unary->unary '.' ID
+binary->unary
+binary->binary '-' binary
+expr->binary
+expr->unary '=' expr
+stmt->expr ';'
+stmt_list->stmt_list stmt
+unary->ID
+unary->ID
+unary->unary '.' ID
+unary->ID
+binary->unary
+expr->binary
+unary->unary '[' expr ']'
+unary->unary '.' ID
+unary->INTEGER_CONST
+binary->unary
+expr->binary
+unary->unary '[' expr ']'
+unary->unary '.' ID
+binary->unary
+unary->ID
+unary->unary '.' ID
+unary->ID
+binary->unary
+expr->binary
+unary->unary '[' expr ']'
+unary->unary '.' ID
+unary->INTEGER_CONST
+binary->unary
+expr->binary
+unary->unary '[' expr ']'
+unary->unary '.' ID
+binary->unary
+binary->binary '-' binary
+expr->binary
+expr->unary '=' expr
+stmt->expr ';'
+stmt_list->stmt_list stmt
+unary->ID
+unary->ID
+unary->unary '.' ID
+unary->ID
+binary->unary
+expr->binary
+unary->unary '[' expr ']'
+unary->unary '.' ID
+unary->INTEGER_CONST
+binary->unary
+expr->binary
+unary->unary '[' expr ']'
+unary->unary '.' ID
+binary->unary
+unary->ID
+unary->unary '.' ID
+unary->ID
+binary->unary
+expr->binary
+unary->unary '[' expr ']'
+unary->unary '.' ID
+unary->INTEGER_CONST
+binary->unary
+expr->binary
+unary->unary '[' expr ']'
+unary->unary '.' ID
+binary->unary
+binary->binary '-' binary
+expr->binary
+expr->unary '=' expr
+stmt->expr ';'
+stmt_list->stmt_list stmt
+unary->ID
+unary->ID
+binary->unary
+unary->ID
+binary->unary
+binary->binary '*' binary
+unary->ID
+binary->unary
+unary->ID
+binary->unary
+binary->binary '*' binary
+binary->binary '+' binary
+unary->ID
+binary->unary
+unary->ID
+binary->unary
+binary->binary '*' binary
+binary->binary '+' binary
+expr->binary
+expr->unary '=' expr
+stmt->expr ';'
+stmt_list->stmt_list stmt
+unary->ID
+binary->unary
+unary->ID
+binary->unary
+binary->binary RELOP binary
+expr->binary
+unary->ID
+unary->ID
+binary->unary
+expr->binary
+expr->unary '=' expr
+stmt->expr ';'
+stmt->IF '(' expr ')' stmt
+stmt_list->stmt_list stmt
+unary->ID
+unary->unary DECOP
+binary->unary
+expr->binary
+stmt->expr ';'
+stmt_list->stmt_list stmt
+compound_stmt->'{' def_list stmt_list '}'
+stmt->compound_stmt
+stmt->WHILE '(' expr ')' stmt
+stmt_list->stmt_list stmt
+unary->ID
+binary->unary
+expr->binary
+stmt->RETURN expr ';'
+stmt_list->stmt_list stmt
+compound_stmt->'{' def_list stmt_list '}'
+ext_def->func_decl compound_stmt
+ext_def_list->ext_def_list ext_def
+type_specifier->TYPE
+pointers->epsilon
+func_decl->type_specifier pointers ID '(' ')'
+def_list->epsilon
+struct_specifier->STRUCT ID
+type_specifier->struct_specifier
+pointers->epsilon
+def->type_specifier pointers ID ';'
+def_list->def_list def
+type_specifier->TYPE
+pointers->epsilon
+def->type_specifier pointers ID ';'
+def_list->def_list def
+stmt_list->epsilon
+unary->ID
+unary->INTEGER_CONST
+binary->unary
+expr->binary
+expr->unary '=' expr
+stmt->expr ';'
+stmt_list->stmt_list stmt
+unary->ID
+unary->CHAR_CONST
+binary->unary
+expr->binary
+expr->unary '=' expr
+stmt->expr ';'
+stmt_list->stmt_list stmt
+unary->ID
+unary->INTEGER_CONST
+binary->unary
+expr->binary
+expr->unary '=' expr
+expr_e->expr
+unary->ID
+binary->unary
+unary->INTEGER_CONST
+binary->unary
+binary->binary RELOP binary
+expr->binary
+expr_e->expr
+unary->ID
+unary->unary INCOP
+binary->unary
+expr->binary
+expr_e->expr
+def_list->epsilon
+stmt_list->epsilon
+unary->ID
+unary->ID
+binary->unary
+expr->binary
+unary->unary '[' expr ']'
+unary->unary '.' ID
+binary->unary
+expr->binary

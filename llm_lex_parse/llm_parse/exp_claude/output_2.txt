@@ -1,0 +1,4 @@
+  File "/home/donguk/llm-lex-parse/llm_lex_parse/llm_parse/exp_claude/parser_2.py", line 233
+    self._consume(""{"")
+                       ^
+SyntaxError: closing parenthesis ')' does not match opening parenthesis '{'

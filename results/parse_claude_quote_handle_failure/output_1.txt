@@ -1,0 +1,4 @@
+SyntaxError: expected '(' but got ( at line 1, column 9
+ext_def_list->epsilon
+type_specifier->TYPE
+pointers->epsilon

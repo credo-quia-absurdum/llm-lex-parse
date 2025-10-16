@@ -1,0 +1,30 @@
+SyntaxError: expected ) but got LOGICAL_AND at line 3, column 17
+ext_def_list->epsilon
+type_specifier->TYPE
+pointers->epsilon
+func_decl->type_specifier pointers ID '(' ')'
+def_list->epsilon
+stmt_list->epsilon
+unary->ID
+unary->ID
+unary->ID
+unary->unary INCOP
+binary->unary
+expr->binary
+unary->unary '[' expr ']'
+unary->unary DECOP
+unary->'*' unary
+unary->'-' unary
+binary->unary
+expr->binary
+expr->unary '=' expr
+stmt->expr ';'
+stmt_list->stmt_list stmt
+unary->ID
+unary->unary INCOP
+binary->unary
+unary->ID
+unary->unary DECOP
+binary->unary
+binary->binary RELOP binary
+expr->binary
