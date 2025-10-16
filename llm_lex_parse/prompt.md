@@ -4,7 +4,7 @@
 
 This project implements a **Python-based lexical analyzer (lexer) and syntactic parser** for a simplified C-like language called **`subC`**.  
 
-- The lexer reads raw source code, tokenizes it based on the lexical rules defined in `llm_lex/spec.md`, and emits **tab-separated ASCII tokens** or a reusable token stream.  
+- The lexer reads raw source code, tokenizes it based on the lexical rules defined in `llm_lex/spec.md`, and emits **tab-separated ASCII tokens** or a reusable token stream. Whenever additional terminals (e.g., `CHAR_CONST`, `STRING`, `SYM_NULL`, logical or structural operators) surface in the parser grammar, revise the lexer spec and implementation so both components stay aligned. The canonical `llm_parse/lexer.py` should remain untouched after the initial refactor—store experiment-specific edits under `llm_parse/exp_codex/` instead.  
 - The parser imports the shared lexer, applies the grammar and table-driven strategy defined in `llm_parse/parser_spec.md`, and emits production reductions or diagnostics.
 
 Development follows an **iterative approach** — each iteration refines functionality, records outputs, and documents analysis results.
@@ -84,7 +84,7 @@ Each iteration targets a single core objective: refine the script so its runtime
    - Discrepancies, bug notes, and improvements
 
 > **Actionable rule:** Always check in the trio (`lexer_N.py`/`parser_N.py`, `output_N.txt`, `analysis_N.md`) together. Even for small tweaks, rerun the executable, capture the fresh logs, and document what changed so the experiment ledger remains reproducible.
-> For the first parser iteration, also refactor `llm_parse/lexer.py` into an importable `tokenize()` helper and mirror the updated lexer under `llm_parse/exp/`.
+> For the first parser iteration, also refactor `llm_parse/lexer.py` into an importable `tokenize()` helper and mirror the updated lexer under `llm_parse/exp/`. Keep the repository’s top-level `llm_parse/lexer.py` frozen after this baseline refactor; apply subsequent lexer changes only inside the experiment directory so the canonical file remains stable.
 
 
 ### Terminate Condition
@@ -104,6 +104,7 @@ When the generated `output_N.txt` matches the target `output.txt` in the corresp
 - Maintain compatibility between lexer and parser modules.
 - Use the shared lexer module inside the parser; do not scrape stdout.
 - Keep the parser’s reduction log formatting consistent with `llm_parse/output.txt` (one `lhs->rhs` per line, literals quoted).
+- Respect prefix vs. postfix handling for `++`/`--`: do not conflate them during parsing, and validate that reductions distinguish `INCOP`/`DECOP` in both positions.
 - Document every meaningful design or behavioral change.
 - Treat each iteration as a self-contained, reproducible experiment.
 - Preserve consistent versioning and directory hygiene for regression tests.

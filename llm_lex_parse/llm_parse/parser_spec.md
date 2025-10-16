@@ -10,6 +10,8 @@ Build a Python-based bottom-up LALR(1) parser for the `subC` language. The parse
 
 The parser relies on the token kinds below. Literal punctuation tokens (parentheses, braces, brackets, comma, semicolon, assignment operator, arithmetic operators, logical negation, address-of, dereference, dot, and percent) are emitted by the lexer as their own one-character lexemes.
 
+> **Note:** The baseline `llm_parse/lexer_spec.md` predates the parser requirements and omits several of these terminals (e.g., character literals, string literals, `SYM_NULL`, multi-character logical operators). Update the lexer specification and implementation whenever a missing token kind is needed so the parser and lexer remain consistent.
+
 | Symbol Name   | Lexeme(s)                            | Notes                                    |
 | ------------- | ------------------------------------ | ---------------------------------------- |
 | `TYPE`        | `int`, `char`                        | Built-in arithmetic types                |
@@ -53,6 +55,8 @@ Expressions obey the precedence and associativity rules listed below (1 is the h
 | 10    | `,`                                              | Left          | Comma sequence                                  |
 
 The dangling-`else` rule binds `else` to the nearest unmatched `if`. Respect the precedence assignments when constructing or reducing expressions.
+
+> **Prefix vs. Postfix `++`/`--`:** The grammar differentiates postfix (`unary INCOP`/`unary DECOP`) from prefix (`INCOP unary`/`DECOP unary`). When building parser tables or resolving conflicts, ensure precedence settings keep these forms distinct—do not collapse them into a single production or resolution path.
 
 ### 2.4 subC vs. Standard C
 
@@ -154,15 +158,16 @@ The Python implementation may internally refactor left-recursive productions (fo
 ### 3.2 Token Stream
 
 - Refactor `llm_parse/lexer.py` during the first parser iteration so that it exposes a reusable `tokenize()` API (returning an iterable of tokens). Mirror that implementation under `llm_parse/exp/` for experiment tracking.
+- Freeze the refactored `llm_parse/lexer.py` in place after the first iteration; all subsequent lexer tweaks required by parser development must live under the experiment directory (e.g., `llm_parse/exp_codex/lexer.py`) so the canonical lexer stays stable.
 - The parser must import this shared lexer module instead of invoking a standalone CLI or relying on stdout capture.
 - Ensure each token exposes at least `kind`, `lexeme`, and `line:column` metadata to support precise error messages.
-- Preserve all tokens required by the grammar, including punctuation and keywords; the parser must not silently coerce unexpected lexemes.
+- Preserve all tokens required by the grammar, including punctuation and keywords; the parser must not silently coerce unexpected lexemes. If a terminal listed in Section 2.1 is missing from the lexer, expand `llm_parse/lexer_spec.md` and the implementation before proceeding.
 
 ### 3.3 Parsing Strategy
 
 - Implement a table-driven LALR(1) parser. Augment the grammar with `program' -> program`, construct the canonical LR(1) item sets, merge compatible states, and derive ACTION/GOTO tables that the runtime uses to shift, reduce, or accept.
 - Generate parsing tables ahead of time (either as static Python dictionaries checked into the repo or dynamically at startup using only the Python standard library). Persist the tables in a deterministic format so experiments remain reproducible.
-- Maintain an explicit parse stack of states and grammar symbols. For each input token, consult `ACTION[state, lookahead]`; perform the indicated shift or reduce, print the reduction immediately when `reduce` is triggered, and follow `GOTO` to push the correct successor state. Enter the accept state when ACTION returns `ACCEPT`.
+- Maintain an explicit parse stack of states and grammar symbols. For each input token, consult `ACTION[state, lookahead]`; perform the indicated shift or reduce, print the reduction immediately when `reduce` is triggered, and follow `GOTO` to push the correct successor state. Enter the accept state when ACTION returns `ACCEPT`. When conflicts involve `INCOP`/`DECOP`, prefer solutions that keep postfix forms as higher precedence (shift) and prefix forms as lower precedence (reduce) to preserve the grammar’s intent.
 - Handle the dangling `else` by ensuring the grammar or precedence rules resolve the ambiguity in favour of binding `ELSE` to the nearest unmatched `IF`. Encode any precedence directives directly into the table-construction phase so no ad-hoc runtime fixes are required.
 
 ### 3.4 Error Reporting
