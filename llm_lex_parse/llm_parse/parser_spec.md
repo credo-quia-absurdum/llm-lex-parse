@@ -137,17 +137,17 @@ The Python implementation may internally refactor left-recursive productions (fo
 
 ### 3.2 Token Stream
 
-- Reuse the Python lexer described in `llm_parse/lexer_spec.md` (either by importing its module or by embedding the same rules) so that token kinds align with Section 2.1.
-- Each token should expose at least the fields `kind`, `lexeme`, and `line:column` location to allow precise error messages.
+- Refactor `llm_parse/lexer.py` during the first parser iteration so that it exposes a reusable `tokenize()` API (returning an iterable of tokens). Mirror that implementation under `llm_parse/exp/` for experiment tracking.
+- The parser must import this shared lexer module instead of invoking a standalone CLI or relying on stdout capture.
+- Ensure each token exposes at least `kind`, `lexeme`, and `line:column` metadata to support precise error messages.
 - Preserve all tokens required by the grammar, including punctuation and keywords; the parser must not silently coerce unexpected lexemes.
 
 ### 3.3 Parsing Strategy
 
-- Choose a parsing algorithm that can accommodate the grammar (Pratt/precedence-climbing for expressions plus recursive-descent for statements is recommended).
-- Replace left-recursive list productions (e.g., `ext_def_list -> ext_def_list ext_def`) with loops that accumulate zero-or-more instances while still emitting reduction messages that reflect the original production order.
-- Implement expression parsing by respecting the precedence table in Section 2.2. Each completed expression should trigger a reduction print for the production actually applied.
-- Handle the dangling `else` by parsing `IF '(' expr ')' stmt` and only matching `ELSE stmt` when present.
-- Allow repeated `'*'` in `pointers` by consuming tokens until the next lexeme is not `'*'`.
+- Implement a table-driven LALR(1) parser. Construct LR(1) item sets for the grammar, merge compatible lookahead sets, and derive ACTION/GOTO tables that the runtime uses to shift and reduce.
+- Generate parsing tables ahead of time (either as static Python dictionaries checked into the repo or dynamically at startup using only the Python standard library).
+- Maintain an explicit parse stack of states and grammar symbols. Follow the customary LALR loop: consult ACTION[state, token], shift or reduce accordingly, and log each completed reduction before updating the stack.
+- Handle the dangling `else` by ensuring the grammar or precedence rules resolve the ambiguity in favour of binding `ELSE` to the nearest unmatched `IF`.
 
 ### 3.4 Error Reporting
 
@@ -157,22 +157,22 @@ The Python implementation may internally refactor left-recursive productions (fo
 
 ## 4. Output Format
 
-- Print one line per completed reduction using the exact layout `lhs -> rhs1 rhs2 ...`. Use `epsilon` for empty right-hand sides.
-- List terminals by their literal spelling (e.g., `';'`, `'('`, `ID`) and nonterminals by the grammar symbol names from Section 2.3.
+- Print one line per completed reduction using the exact layout `lhs->rhs1 rhs2 ...` (no spaces adjoining `->`). Use `epsilon` for empty right-hand sides.
+- Quote literal terminals with single quotes (e.g., `'('`, `';'`, `'{'`) to match `llm_parse/output.txt`. Nonterminals remain bare symbol names.
 - Reductions must appear in the order they occur during parsing. When implementing a top-down parser, emit the reduction once the production's right-hand side has been fully matched.
 - No additional whitespace, prompts, or debugging text is permitted on `stdout`.
 
 Example reductions for a simple program:
 
 ```
-ext_def_list -> epsilon
-type_specifier -> TYPE
-pointers -> epsilon
-func_decl -> type_specifier pointers ID '(' ')'
-compound_stmt -> '{' def_list stmt_list '}'
-ext_def -> func_decl compound_stmt
-ext_def_list -> ext_def_list ext_def
-program -> ext_def_list
+ext_def_list->epsilon
+type_specifier->TYPE
+pointers->epsilon
+func_decl->type_specifier pointers ID '(' ')'
+compound_stmt->'{' def_list stmt_list '}'
+ext_def->func_decl compound_stmt
+ext_def_list->ext_def_list ext_def
+program->ext_def_list
 ```
 
 ## 5. Experiment Artifacts
@@ -182,6 +182,7 @@ Each parser iteration must produce the following artifacts under `llm_parse/exp/
 - `parser_N.py` — Python source for iteration `N`.
 - `output_N.txt` — capture `stdout` and `stderr` via `python3 llm_parse/exp/parser_N.py llm_parse/input.txt > llm_parse/exp/output_N.txt 2>&1`.
 - `analysis_N.md` — document environment details, command executed, observed output, deviations from `llm_parse/output.txt`, and follow-up actions.
+- `lexer_N.py` — for iteration 1, refactor `llm_parse/lexer.py` into `llm_parse/exp/lexer_1.py` (and promote improvements back to `llm_parse/lexer.py`) so the parser can import a shared tokenizer.
 
 Do not omit the execution log or the analysis report; they provide the reproducibility trail for each experiment.
 
