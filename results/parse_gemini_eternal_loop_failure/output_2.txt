@@ -1,0 +1,5 @@
+SyntaxError: Unexpected token a in state 21
+pointers->epsilon
+func_decl->type_specifier pointers ID '(' ')'
+pointers->epsilon
+pointers->epsilon

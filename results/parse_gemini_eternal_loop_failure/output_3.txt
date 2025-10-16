@@ -1,0 +1,23 @@
+state: 0, token: Token(kind='TYPE', lexeme='int', line=1, column=1)
+state: 2, token: Token(kind='ID', lexeme='main', line=1, column=5)
+state: 3, token: Token(kind='ID', lexeme='main', line=1, column=5)
+state: 6, token: Token(kind='(', lexeme='(', line=1, column=9)
+state: 9, token: Token(kind=')', lexeme=')', line=1, column=10)
+state: 11, token: Token(kind='{', lexeme='{', line=1, column=11)
+state: 5, token: Token(kind='{', lexeme='{', line=1, column=11)
+state: 8, token: Token(kind='TYPE', lexeme='int', line=3, column=2)
+state: 15, token: Token(kind='ID', lexeme='a', line=3, column=6)
+state: 16, token: Token(kind='ID', lexeme='a', line=3, column=6)
+state: 20, token: Token(kind=';', lexeme=';', line=3, column=7)
+state: 21, token: Token(kind='TYPE', lexeme='char', line=4, column=2)
+state: 15, token: Token(kind='ID', lexeme='b', line=4, column=7)
+state: 16, token: Token(kind='ID', lexeme='b', line=4, column=7)
+state: 20, token: Token(kind=';', lexeme=';', line=4, column=8)
+state: 21, token: Token(kind='ID', lexeme='a', line=6, column=2)
+state: 24, token: Token(kind='=', lexeme='=', line=6, column=4)
+Error: No GOTO for state 21 and non-terminal unary
+pointers->epsilon
+func_decl->type_specifier pointers ID '(' ')'
+pointers->epsilon
+pointers->epsilon
+unary->ID
